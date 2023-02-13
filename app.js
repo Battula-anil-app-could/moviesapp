@@ -37,7 +37,22 @@ app.get("/movies/", async (request, response) => {
     };
     return n;
   });
-  response.send(newList);
+  response.send(list);
+});
+
+app.post("/movies/", async (request, response) => {
+  let details = request.body;
+  let { directorId, movieName, leadActor } = details;
+  let query = `insert into movie 
+                    (movie_id, director_id, movie_name, lead_actor)
+                    VALUES 
+                        (
+                        (select count() from movie)+${1},
+                            ${directorId},
+                            ${movieName},
+                            ${leadActor})`;
+  let movies = await db.run(query);
+  response.send(movies);
 });
 
 module.exports = app;
