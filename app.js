@@ -55,4 +55,11 @@ app.post("/movies/", async (request, response) => {
   response.send(movies);
 });
 
+app.get("/movies/:movieId/", async (request, response) => {
+  let { id } = request.params;
+  let query = `select * from movie where movie_id = ${id}`;
+  let obj = await db.get(query);
+  response.send(query);
+});
+
 module.exports = app;
